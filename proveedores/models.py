@@ -10,33 +10,33 @@ class ArticuloDisponible(models.Model):
     '''
     nombre = models.CharField(("Nombre"), max_length=50)
     
-    '''atributo1 = models.CharField(("Atributo 1"), max_length=50, null=True, blank=True)
+    atributo1 = models.CharField(("Atributo 1"), max_length=50, null=True, blank=True)
     atributo2 = models.CharField(("Atributo 2"), max_length=50, null=True, blank=True)
     valor1 = models.CharField((" Valor 1"), max_length=50, null=True, blank=True)
-    valor2 = models.CharField(("Valor 2"), max_length=50, null=True, blank=True)'''
+    valor2 = models.CharField(("Valor 2"), max_length=50, null=True, blank=True)
     descripcion = models.CharField(("Descripción"), max_length=500, null=True, blank=True)
     marca = models.CharField(("Marca"), max_length=50, null=True, blank=True)
     feature = models.CharField(("Feature"), max_length=50, null=True, blank=True)
     pvpBigbuy = models.FloatField(("PVP venta al publico en Bigbuy"))
     pvd = models.FloatField(("Precio en Origen"), null=True, blank=True)
     iva = models.FloatField(("I.V.A."), null=True, blank=True)
-    ''' video = models.FloatField(("Video"), null=True, blank=True)
-    '''    
+    video = models.FloatField(("Video"), null=True, blank=True)
+      
     ean13 = models.CharField(("ean"), max_length=50, null=True, blank=True)
-    '''ancho = models.FloatField(("Ancho"), null=True, blank=True)
+    ancho = models.FloatField(("Ancho"), null=True, blank=True)
     altura = models.FloatField(("Alto"), null=True, blank=True)
-    profundidad = models.FloatField(("Profundo"), null=True, blank=True)'''
+    profundidad = models.FloatField(("Profundo"), null=True, blank=True)
     peso = models.FloatField(("Peso"), null=True, blank=True)
     stock = models.IntegerField(("Stock"), default=0)
     imagen1 = models.URLField(("Imágen"), max_length=5000, null=True, blank=True)
-    '''imagen2 = models.URLField(("Imágen"), max_length=500, null=True, blank=True)
+    imagen2 = models.URLField(("Imágen"), max_length=500, null=True, blank=True)
     imagen3 = models.URLField(("Imágen"), max_length=500, null=True, blank=True)
     imagen4 = models.URLField(("Imágen"), max_length=500, null=True, blank=True)
     imagen5 = models.URLField(("Imágen"), max_length=500, null=True, blank=True)
     imagen6 = models.URLField(("Imágen"), max_length=500, null=True, blank=True)
     imagen7 = models.URLField(("Imágen"), max_length=500, null=True, blank=True)
     imagen8 = models.URLField(("Imágen"), max_length=500, null=True, blank=True)
-    estado = models.CharField(("Estado:"), max_length=50, null=True, blank=True)'''
+    estado = models.CharField(("Estado:"), max_length=50, null=True, blank=True)
     created = models.CharField(("Creado el:"), max_length=50, null=True)
     updated = models.CharField(("Actualizado el:"), max_length=50, null=True)
     inventariado = models.BooleanField(("Inventariado"), default=False)
