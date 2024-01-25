@@ -54,3 +54,8 @@ class ArticuloDisponible(models.Model):
     
     def __str__(self):
         return (self.nombre)
+    
+    def precio_de_mercado(self, *args, **kwargs):
+        
+        pass
+        
