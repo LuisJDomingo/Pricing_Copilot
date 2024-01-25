@@ -30,3 +30,9 @@ def inventariar(request, id):
     articulo.save()
     print(f"Después de la actualización - inventariado: {articulo.inventariado}")
     return redirect('proveedores')
+
+
+
+
+
+   
