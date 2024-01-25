@@ -1,5 +1,7 @@
 from django.db import models
 import random
+from requests_html import HTMLSession
+from bs4 import BeautifulSoup 
 
 # Create your models here.
 from django.db import models
@@ -56,6 +58,7 @@ class ArticuloDisponible(models.Model):
         return (self.nombre)
     
     def precio_de_mercado(self, *args, **kwargs):
-        
+        session = HTMLSession()
+        s
         pass
         
