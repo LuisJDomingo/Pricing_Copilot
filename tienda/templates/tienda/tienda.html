@@ -1,0 +1,52 @@
+{% extends "proyectoweb_app/plantilla_padre.html" %}
+
+{% load static %}
+<!--{% load crispy_forms_tags %}-->
+{% block content %}
+   <div><p style="color: white; text-align: center;">
+
+    estamos en la tienda
+
+   </p></div>
+
+      <div class="container">
+         <!-- carrito de la compra-->
+         <div style="float:right;"> 
+            <!--<p style="color: white;">Total: {{importe_total_carro}}</p>-->
+            {% if request.user.is_authenticated%}
+               {% include "carro/carro.html" %} 
+            {% else%}
+
+               <div class="alert alert-danger text-center">Logueate para ver el carro</div>
+               
+            {%endif%}
+         </div>
+      </div>
+
+   <div class="row">
+         {% for producto in inventario %}
+            <div class="col-md-3">
+               <div class="card" style="width: 100%; margin: 5px 5px">
+                  <img src="{{producto.imagen1}}" class="card-img-top">
+            
+                  <div class="card-body" style="text-align: center;">
+                     <h5>{{producto.nombre}}</h5>
+                     <p>{{producto.pvpBigbuy}}&nbsp;€</p>
+                  </div>
+
+                  <div class="card-footer text-center">
+                     <a href="{% url 'carro:agregar' producto.id %}" class="btn btn-success">Agregar al carro</a>
+                  </div>
+               </div>
+            </div>
+            {% if forloop.counter|divisibleby:4 and not forloop.last %}
+               
+               <div class="row"></div>
+            {% endif %}
+         {% endfor %}
+      </div>
+   </div>
+   
+{% endblock %}
+
+    

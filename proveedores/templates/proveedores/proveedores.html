@@ -1,0 +1,105 @@
+{% extends "proyectoweb_app/plantilla_padre.html" %}
+
+{% load static %}
+
+{% block content %}
+<div class="colspan">
+   <p style="color: white; text-align: center; py-4; px-4">
+       <h1>Análisis de productos</h1>
+   </p>
+</div>
+
+<div class="colspan">
+    <p>
+        <h1></h1>
+    </p>
+</div>
+
+<div class="row">
+   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 py-4">
+    <h2>Añadir Productos</h2>
+       <div class="card">
+           <div class="card-body">
+               <form action="{% url 'guardar_manualmente' %}" method="POST">
+                   {% csrf_token %}
+
+                   <div class="form-group">
+                       <input type="text" id="txtnombre" name="txtnombre" class="form-control"
+                           placeholder="Nombre" minlength="5" maxlength="500" required>
+                   </div>
+
+                   <div class="form-group">
+                       <input type="text" id="pvpBigbuy" name="numprecio" class="form-control"
+                           placeholder="Coste" minlength="5" maxlength="500" required>
+                   </div>
+
+                   <div class="form-group">
+                       <input type="text" id="ean13" name="ean13" class="form-control"
+                           placeholder="EAN13" minlength="5" maxlength="500">
+                   </div>
+                    <div class="form-group">
+                        <input type="url" id="imagen1" name="imagen1" class="form-control"
+                            placeholder="url de la imagen" minlength="5" maxlength="500">
+                    </div>
+
+                   <div class="form-group">
+                       <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                   </div>
+               </form>
+               <h2>aqui se puede implementar una carga de datos meniante archivo</h2>
+           </div>
+       </div>
+   </div>
+
+   <div class="col-sm-10 col-md-6 col-lg-8 col-xl-8 py-4">
+       <h2>Listado de productos disponibles en proveedores</h2>
+       <div class="table-responsive py-2">
+           <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Coste</th>
+                        <th style="text-align:right" >Precio de la competencia</th>
+                        <th colspan="2" style="text-align:right">Inventariar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   {% for articulo in articulosproveedores %}
+                   <tr>
+                        <td style="text-align:center;  whidth: 2%;">
+                            <!-- Agrega un campo para la URL de la imagen aquí -->
+                            <img src="{{ articulo.imagen1|safe }}"  alt="Imagen" style="width: 50px; height: auto;">
+
+                        </td>
+                        <td>{{ articulo.nombre }}</td>
+
+                   
+                        <td {% if articulo.pvpBigbuy > articulo.preciodemercado %} style="color: red">  {{ articulo.pvpBigbuy }} €
+                            
+                            {% elif articulo.pvpBigbuy < articulo.preciodemercado %}style="color: green"> {{ articulo.pvpBigbuy }} €
+                            
+                            {% endif %}
+                           
+                        </td>
+                        <td style="text-align:right">
+                            {{ articulo.preciodemercado }} €
+
+                        </td>
+                        
+                        {%if not articulo.inventariado%}
+                            <td style="text-align:right" ><a href="{% url 'inventariar' id=articulo.id %}" class="btn btn-info">Inventariar</a></td>
+                        {%else%}
+                            <td style="text-align:right" ><a href="{% url 'inventariar' id=articulo.id %}" class="btn btn-info">Quitar</a></td>
+                        {%endif%}
+                   </tr>
+                   {% endfor %}
+               </tbody>
+           </table>
+       </div>
+   </div>
+</div>
+</div>
+
+{% endblock %}
+    

@@ -1,0 +1,17 @@
+{% extends "proyectoweb_app/plantilla_padre.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <form method="post" action="">
+      
+   {% csrf_token %}
+   <div style="width:40%; margin: auto; background-color: white;">
+      {{form | crispy}}
+      <button type="submit" class="btn btn-success">registro</button>
+   </div>
+  </form>
+{% endblock %}
+
+    
