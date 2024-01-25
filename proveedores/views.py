@@ -36,10 +36,3 @@ def inventariar(request, id):
 
 
    
-'''
-def inventariar(request, id):
-    articulo=ArticuloDisponible.objects.get(id=id)
-    articulo.inventariado=not articulo.inventariado
-    articulo.save()
-    return redirect('proveedores')
-'''
