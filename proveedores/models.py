@@ -8,7 +8,7 @@ from django.db import models
 class ArticuloDisponible(models.Model):
     
     categoria = models.CharField(("Categoria"), max_length=50, null=True, blank=True)    
-    
+    idproveedor= models.CharField(("Id Proveedor"), max_length=50, null=True, blank=True) 
     nombre = models.CharField(("Nombre"), max_length=50)
     
     atributo1 = models.CharField(("Atributo 1"), max_length=50, null=True, blank=True)
