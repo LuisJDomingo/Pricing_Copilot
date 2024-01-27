@@ -7,6 +7,7 @@ from proveedores.models import ArticuloDisponible
 from django.http import HttpResponse
 import csv
 from .models import Articulodisponible
+import chardet
 
 @login_required(login_url="/autenticacion/loguear")
 def proveedores(request, articulo_id=None):
@@ -35,27 +36,70 @@ def inventariar(request, id):
     print(f"Después de la actualización - inventariado: {articulo.inventariado}")
     return redirect('proveedores')
 
-def upload_csv(request):
+def importar_csv(request):
     if request.method == "POST":
-        csv_file = request.FILES['csv_file']
+        csv_file = request.FILES['csv_file']  # csv_file: es el nombre del CAMPO en el Formulario Html
         if not csv_file.name.endswith('.csv'):
             return HttpResponse("Archivo no es CSV")
+
+        # Detectar la codificación del archivo
+        raw_data = csv_file.read()
+        encoding = chardet.detect(raw_data)['encoding']
+
+        # Decodificar los datos del archivo en la codificación detectada
+        file_data = raw_data.decode(encoding)
+
+        reader = csv.reader(file_data.splitlines(), delimiter=';', quotechar='"')
         
-        file_data = csv_file.read().decode("utf-8")        
-        lines = file_data.split("\n")
-        # Omitir el encabezado si lo hay
-        for line in lines[1:]:  
-            fields = line.split(",")
-            # Asegúrate de que la línea no esté vacía
-            if line:
-                # Crea una instancia de tu modelo
-                TuModelo.objects.create(
-                    campo1=fields[0],
-                    campo2=fields[1],
-                    # Asegúrate de asignar todos los campos necesarios
+        next(reader, None)  # Omite el encabezado si lo hay
+        for fields in reader:
+            if len(fields) < 32:  # Asegúrate de que hay suficientes campos
+                continue
+
+            try:
+                # Crea una instancia del modelo ArticuloDisponible
+                ArticuloDisponible.objects.create(
+                    idproveedor=fields[0] if fields[0] else None,
+                    categoria=fields[1] if fields[1] else None,
+                    nombre=fields[2],
+                    atributo1=fields[3] if fields[3] else None,
+                    atributo2=fields[4] if fields[4] else None,
+                    valor1=fields[5] if fields[5] else None,
+                    valor2=fields[6] if fields[6] else None,
+                    descripcion=fields[7] if fields[7] else None,
+                    marca=fields[8] if fields[8] else None,
+                    feature=fields[9] if fields[9] else None,
+                    pvpBigbuy=float(fields[10].replace(',', '.')) if fields[10] else None,
+                    pvd=float(fields[11].replace(',', '.')) if fields[11] else None,
+                    iva=float(fields[12].replace(',', '.')) if fields[12] else None,
+                    video=float(fields[13].replace(',', '.')) if fields[13] else None,
+                    ean13=fields[14] if fields[14] else None,
+                    ancho=float(fields[15].replace(',', '.')) if fields[15] else None,
+                    altura=float(fields[16].replace(',', '.')) if fields[16] else None,
+                    profundidad=float(fields[17].replace(',', '.')) if fields[17] else None,
+                    peso=float(fields[18].replace(',', '.')) if fields[18] else None,
+                    stock=int(fields[19]) if fields[19] else 0,
+                    imagen1=fields[20] if fields[20] else None,
+                    imagen2=fields[21] if fields[21] else None,
+                    imagen3=fields[22] if fields[22] else None,
+                    imagen4=fields[23] if fields[23] else None,
+                    imagen5=fields[24] if fields[24] else None,
+                    imagen6=fields[25] if fields[25] else None,
+                    imagen7=fields[26] if fields[26] else None,
+                    imagen8=fields[27] if fields[27] else None,
+                    estado=fields[28] if fields[28] else None,
+                    created=fields[29] if fields[29] else None,
+                    updated=fields[30] if fields[30] else None,
+                    inventariado=fields[31].lower() in ['true', '1', 't', 'y', 'yes', 'sí', 'si'] if fields[31] else False
                 )
-        return HttpResponse("Archivo CSV importado con éxito")
-    return HttpResponse("Solicitud inválida")
+            except IndexError as e:
+                print(f"Error en la línea: {fields}")
+                print(f"Mensaje de error: {e}")
+                continue  # Continuar con la siguiente línea en caso de error
+
+        return redirect('proveedores')  # Redirige después de procesar todas las líneas
+    else:
+        return HttpResponse("Solicitud inválida")
 
 
 
