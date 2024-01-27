@@ -46,6 +46,17 @@
                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
                    </div>
                </form>
+               <form action="{% url 'importar_csv' %}" method="POST">
+                   {% csrf_token %}
+
+                   <div class="form-group">
+                       <input type="file" name="csv_file">
+                   </div>
+
+                   <div class="form-group">
+                        <button type="submit">Subir</button>
+                   </div>
+               </form>
                <h2>aqui se puede implementar una carga de datos meniante archivo</h2>
            </div>
        </div>
