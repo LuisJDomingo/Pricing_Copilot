@@ -37,6 +37,7 @@ def inventariar(request, id):
     return redirect('proveedores')
 
 def importar_csv(request):
+    print("empieza la carga")
     if request.method == "POST":
         csv_file = request.FILES['csv_file']  # csv_file: es el nombre del CAMPO en el Formulario Html
         if not csv_file.name.endswith('.csv'):
@@ -45,17 +46,21 @@ def importar_csv(request):
         # Detectar la codificación del archivo
         raw_data = csv_file.read()
         encoding = chardet.detect(raw_data)['encoding']
-
+        print(encoding)
         # Decodificar los datos del archivo en la codificación detectada
         file_data = raw_data.decode(encoding)
 
-        reader = csv.reader(file_data.splitlines(), delimiter=';', quotechar='"')
-        
+        reader = csv.reader(file_data.splitlines(), delimiter=',', quotechar='"')
         next(reader, None)  # Omite el encabezado si lo hay
+        for i, row in enumerate(reader):
+            if i == 1:  # Solo para depuración, imprime la segunda fila
+                print(row)
+                break
+        # Omite el encabezado si lo hay
         for fields in reader:
             if len(fields) < 32:  # Asegúrate de que hay suficientes campos
                 continue
-
+            print(len(fields))
             try:
                 # Crea una instancia del modelo ArticuloDisponible
                 ArticuloDisponible.objects.create(
