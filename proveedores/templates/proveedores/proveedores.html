@@ -46,7 +46,7 @@
                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
                    </div>
                </form>
-               <form action="{% url 'importar_csv' %}" method="POST">
+               <form action="{% url 'importar_csv' %}" method="POST" enctype="multipart/form-data">
                    {% csrf_token %}
 
                    <div class="form-group">
@@ -54,10 +54,9 @@
                    </div>
 
                    <div class="form-group">
-                        <button type="submit">Subir</button>
-                   </div>
+                    <button type="submit" class="btn btn-success btn-block text-white">Subir Archivo</button>
+                </div>
                </form>
-               <h2>aqui se puede implementar una carga de datos meniante archivo</h2>
            </div>
        </div>
    </div>
