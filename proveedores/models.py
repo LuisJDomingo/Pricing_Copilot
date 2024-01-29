@@ -7,18 +7,22 @@ from django.db import models
 
 class ArticuloDisponible(models.Model):
     
+    idproveedor= models.CharField(("Id Proveedor"), max_length=50, null=True, blank=True)
     categoria = models.CharField(("Categoria"), max_length=50, null=True, blank=True)    
-    idproveedor= models.CharField(("Id Proveedor"), max_length=50, null=True, blank=True) 
-    nombre = models.CharField(("Nombre"), max_length=50)
+    nombre = models.CharField(("Nombre"), max_length=50, null=True, blank=True)
     
     atributo1 = models.CharField(("Atributo 1"), max_length=50, null=True, blank=True)
     atributo2 = models.CharField(("Atributo 2"), max_length=50, null=True, blank=True)
     valor1 = models.CharField((" Valor 1"), max_length=50, null=True, blank=True)
     valor2 = models.CharField(("Valor 2"), max_length=50, null=True, blank=True)
+    
     descripcion = models.CharField(("Descripción"), max_length=500, null=True, blank=True)
+    
     marca = models.CharField(("Marca"), max_length=50, null=True, blank=True)
     feature = models.CharField(("Feature"), max_length=50, null=True, blank=True)
-    pvpBigbuy = models.FloatField(("PVP venta al publico en Bigbuy"))
+    
+    precio_de_venta_al_por_menor = models.FloatField(("PVP venta al publico en Bigbuy"), null=True, blank=True)
+    pvpBigbuy = models.FloatField(("PVP venta al publico en Bigbuy"), null=True, blank=True)
     pvd = models.FloatField(("Precio en Origen"), null=True, blank=True)
     iva = models.FloatField(("I.V.A."), null=True, blank=True)
     video = models.FloatField(("Video"), null=True, blank=True)
@@ -42,7 +46,7 @@ class ArticuloDisponible(models.Model):
     updated = models.CharField(("Actualizado el:"), max_length=50, null=True)
     inventariado = models.BooleanField(("Inventariado"), default=False)
     preciodemercado = models.FloatField(("Precio de Mercado"), default=0, null=True)
-
+    
     def save(self, *args, **kwargs):
         # Actualizar el atributo 'preciodemercado' al guardar
         random_offset = random.uniform(-10, 10)
