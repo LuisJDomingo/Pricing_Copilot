@@ -36,6 +36,16 @@ def inventariar(request, id):
     print(f"Después de la actualización - inventariado: {articulo.inventariado}")
     return redirect('proveedores')
 
+def eliminar_articulo(request, id):
+    print(f"ID recibido: {id}")
+    articulo = ArticuloDisponible.objects.get(id=id)
+    print(f"Antes de la actualización - inventariado: {articulo.inventariado}")
+    referencia=articulo.id
+    articulo.delete()
+    print ("fin")
+    return redirect('proveedores')
+
+
 def importar_csv(request):
     print("empieza la carga")
     if request.method == "POST":
@@ -105,6 +115,46 @@ def importar_csv(request):
         return redirect('proveedores')  # Redirige después de procesar todas las líneas
     else:
         return HttpResponse("Solicitud inválida")
+
+def grafico_inventario(request):
+    productos = ArticuloDisponible.objects.filter(inventariado=True)
+    articulos_en_tienda = len(productos)
+    productos = ArticuloDisponible.objects.all()
+    productos_por_inventariar= len(productos) - articulos_en_tienda
+    
+    chart={
+        "tooltip": { "trigger": 'item' },
+        "legend": { "top": '0%',"left": 'left' },
+        "series": [
+            {"name": 'Articulos Inventariados',
+             "type": 'pie',
+             "radius": ['30%', '60%'],
+             "avoidLabelOverlap": False,
+             "itemStyle": {
+                "borderRadius": 10,
+                "borderColor": '#fff',
+                "borderWidth": 2},
+             "label": {
+                "show": False,
+                "position": 'center'},
+             "emphasis": {
+                "label": {
+                    "show": True,
+                    "fontSize": 24,
+                    "fontWeight": 'bold'}},
+             "labelLine": {
+                "show": False
+             },
+             "data": [
+                { "value": articulos_en_tienda, "name": 'Artículos Inventariados'}, #la longitud de la tabala inventario
+                { "value": productos_por_inventariar, "name": 'Artículos por Inventariar'}, #la logitud de proveedores meno inventario
+                # ejemplo de sintaxis { value: 580, name: 'Email' },
+                ]
+            }
+        ]
+        };
+    
+    return JsonResponse(chart)
 
 
 
