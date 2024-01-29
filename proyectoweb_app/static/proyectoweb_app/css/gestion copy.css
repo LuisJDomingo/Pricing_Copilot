@@ -308,3 +308,9 @@ ul.errorlist{
 .card-back {
   backface-visibility: hidden;}
 
+
+.chart {
+   width: 100%;
+   min.height: 300px;   
+}
+
