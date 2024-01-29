@@ -15,101 +15,142 @@
     </p>
 </div>
 
-<div class="row">
-   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 py-4">
-    <h2>Añadir Productos</h2>
-       <div class="card">
-           <div class="card-body">
-               <form action="{% url 'guardar_manualmente' %}" method="POST">
-                   {% csrf_token %}
+<div class="container">
+    <div class="row">
+        <!-- Sección de Añadir Productos -->
+        <div class="col-md-4 py-4">
+            <h2>Añadir Productos</h2>
+            <div class="card">
+                <div class="card-body">
+                    <form action="{% url 'guardar_manualmente' %}" method="POST">
+                       {% csrf_token %}
 
-                   <div class="form-group">
-                       <input type="text" id="txtnombre" name="txtnombre" class="form-control"
-                           placeholder="Nombre" minlength="5" maxlength="500" required>
-                   </div>
+                       <div class="form-group">
+                           <input type="text" id="txtnombre" name="txtnombre" class="form-control"
+                               placeholder="Nombre" minlength="5" maxlength="500" required>
+                       </div>
 
-                   <div class="form-group">
-                       <input type="text" id="pvpBigbuy" name="numprecio" class="form-control"
-                           placeholder="Coste" minlength="5" maxlength="500" required>
-                   </div>
+                       <div class="form-group">
+                           <input type="text" id="pvpBigbuy" name="numprecio" class="form-control"
+                               placeholder="Coste" minlength="5" maxlength="500" required>
+                       </div>
 
-                   <div class="form-group">
-                       <input type="text" id="ean13" name="ean13" class="form-control"
-                           placeholder="EAN13" minlength="5" maxlength="500">
-                   </div>
-                    <div class="form-group">
-                        <input type="url" id="imagen1" name="imagen1" class="form-control"
-                            placeholder="url de la imagen" minlength="5" maxlength="500">
-                    </div>
+                       <div class="form-group">
+                           <input type="text" id="ean13" name="ean13" class="form-control"
+                               placeholder="EAN13" minlength="5" maxlength="500">
+                       </div>
+                        <div class="form-group">
+                            <input type="url" id="imagen1" name="imagen1" class="form-control"
+                                placeholder="url de la imagen" minlength="5" maxlength="500">
+                        </div>
 
-                   <div class="form-group">
-                       <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
-                   </div>
-               </form>
-               <form action="{% url 'importar_csv' %}" method="POST" enctype="multipart/form-data">
-                   {% csrf_token %}
-
-                   <div class="form-group">
-                       <input type="file" name="csv_file">
-                   </div>
-
-                   <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-block text-white">Subir Archivo</button>
+                       <div class="form-group">
+                           <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                       </div>
+                    </form>
                 </div>
-               </form>
-           </div>
-       </div>
-   </div>
+            </div>
+        </div>
 
-   <div class="col-sm-10 col-md-6 col-lg-8 col-xl-8 py-4">
-       <h2>Listado de productos disponibles en proveedores</h2>
-       <div class="table-responsive py-2">
-           <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Nombre</th>
-                        <th>Coste</th>
-                        <th style="text-align:right" >Precio de la competencia</th>
-                        <th colspan="2" style="text-align:right">Inventariar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                   {% for articulo in articulosproveedores %}
-                   <tr>
-                        <td style="text-align:center;  whidth: 2%;">
-                            <!-- Agrega un campo para la URL de la imagen aquí -->
-                            <img src="{{ articulo.imagen1|safe }}"  alt="Imagen" style="width: 50px; height: auto;">
+        <!-- Sección de Carga de Archivos CSV -->
+        <div class="col-md-4 py-4">
+            <h2>Cargar Archivo CSV</h2>
+            <div class="card">
+                <div class="card-body">
+                    <form action="{% url 'importar_csv' %}" method="POST" enctype="multipart/form-data">
+                       {% csrf_token %}
 
-                        </td>
-                        <td>{{ articulo.nombre }}</td>
+                        <div class="form-group">
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label">Default file input example</label>
+                                <input class="form-control" type="file" id="formFile" name="csv_file">
+                              </div>
+                        </div>
 
-                   
-                        <td {% if articulo.pvpBigbuy > articulo.preciodemercado %} style="color: red">  {{ articulo.pvpBigbuy }} €
-                            
-                            {% elif articulo.pvpBigbuy < articulo.preciodemercado %}style="color: green"> {{ articulo.pvpBigbuy }} €
-                            
-                            {% endif %}
-                           
-                        </td>
-                        <td style="text-align:right">
-                            {{ articulo.preciodemercado }} €
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-block text-white">Subir Archivo</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-                        </td>
-                        
-                        {%if not articulo.inventariado%}
-                            <td style="text-align:right" ><a href="{% url 'inventariar' id=articulo.id %}" class="btn btn-info">Inventariar</a></td>
-                        {%else%}
-                            <td style="text-align:right" ><a href="{% url 'inventariar' id=articulo.id %}" class="btn btn-info">Quitar</a></td>
-                        {%endif%}
-                   </tr>
-                   {% endfor %}
-               </tbody>
-           </table>
-       </div>
-   </div>
+        <!-- Sección del Gráfico -->
+        <div class="col-md-4 py-4">
+            <h2>Gráfico de Inventario</h2>
+            <div class="card">
+                <div class="card-body">
+                    <div id="chart" class="chart" style="width: 100%; height: 272px;"></div>
+                </div>
+            </div>
+            <!-- Scripts para el gráfico -->
+            <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+            <script src="{% static 'proyectoweb_app/js/main.js' %}"></script> 
+        </div>
+    </div>
 </div>
+      
+<div class="container">
+    <div class="row">
+        <div class="col-12 py-4">
+            <h2>Listado de productos disponibles en proveedores</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nombre</th>
+                            <th>Coste</th>
+                            <th style="text-align:right">Precio de la competencia</th>
+                            <th style="text-align:right">Inventariar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for articulo in articulosproveedores %}
+                        <tr>
+                            <td style="text-align:center; width: 2%;">
+                                <img src="{{ articulo.imagen1 }}" alt="Imagen" style="width: 100px; height: auto;">
+                                
+                            </td>
+                            <td>{{ articulo.nombre }}</td>
+                            <td {% if articulo.pvpBigbuy > articulo.preciodemercado %} style="color: red" {% elif articulo.pvpBigbuy < articulo.preciodemercado %} style="color: green" {% endif %}>
+                                {{ articulo.pvpBigbuy }} €
+                            </td>
+                            <td style="text-align:right">
+                                {{ articulo.preciodemercado }} €
+                            </td>
+                            <td style="text-align:right">
+                                <a href="{% url 'eliminar_articulo' id=articulo.id %}" class="btn btn-info">
+                                    Eliminar
+                                </a>
+                            </td>
+                            <td style="text-align:right">
+                                <a href="{% url 'inventariar' id=articulo.id %}" class="btn btn-info">
+                                    {% if not articulo.inventariado %}Inventariar{% else %}No Inventariar{% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    {% for page_num in articulosproveedores.paginator.page_range %}
+                        {% if articulosproveedores.number == page_num %}
+                            <li class="page-item active"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+    </div>
 </div>
-
 {% endblock %}
+
+
+
+
     
