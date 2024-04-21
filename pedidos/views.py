@@ -15,47 +15,22 @@ def procesar_pedido(request):
     pedido=Pedido.objects.create(user=request.user)
     carro=Carro(request)
     lineas_pedido=list()
-    '''
-    *****************************aqui está el error:
-                                        IntegrityError at pedidos
-                                        FOREIGN KEY constraint failed
-                                        Request Method:	GET
-                                        Request URL:	http:///127.0.0.1:8000//pedidos//
-                                        Django Version:	4.2.7
-                                        Exception Type:	IntegrityError
-                                        Exception Value:	
-                                        FOREIGN KEY constraint failed
-                                        
+                                       
     
     for key, value in carro.carro.items():
         lineas_pedido.append(LineaPedido(
             articulodisponible_id=key,
             cantidad=value["cantidad"],
             user=request.user,
-            pedido=pedido
-            
-        ))
-        
-        
-    
-    
+            pedido=pedido))
     LineaPedido.objects.bulk_create(lineas_pedido)
-    
-    
-    
     enviar_mail(
         pedido=pedido,
         lineas_pedido=lineas_pedido,
         nombreusuario=request.user.username,
         emailusuario=request.user.email)
-    
-    
     messages.success(request, "el pedido se ha realizado con exito")
-    
-    '''
-    
     carro.limpiar_carro()
-    
     return redirect("../tienda")
 
 
