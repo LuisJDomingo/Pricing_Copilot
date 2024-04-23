@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from django.conf.global_settings import MEDIA_ROOT
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -84,6 +86,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'proyectoweb.wsgi.application'
 
+# Configuración para el envío de correos electrónicos
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.cosasmolonas.eu'
+#EMAIL_USE_TLS = True
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'luisdomingo@cosasmolonas.eu'
+EMAIL_HOST_PASSWORD = 'Genio1712'
+EMAIL_USE_SSL = True  # Activa esto si tu servidor SMTP utiliza SSL en lugar de TLS (menos común)
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -131,8 +142,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 #BASE_DIR = Path('media').resolve().parent.parent
 MEDIA_ROOT = BASE_DIR / 'media'
 #MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
@@ -148,4 +160,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #crispy en boostrap
 
-CRISPY_TEMPLATE_PACK='Bootstrap4'
+CRISPY_TEMPLATE_PACK='bootstrap4'
+
+
+
